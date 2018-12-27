@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes();
+
+Route::get('/', 'UserController@index')->name('home');
+Route::get('/user/{id}', 'UserController@show')->name('user');
+
+Route::resource('/photo', 'PhotoController', ['except' => ['index']]);

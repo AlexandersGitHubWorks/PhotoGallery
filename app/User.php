@@ -27,4 +27,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Create a bindings with 'photos' table.
+     */
+    public function photos()
+    {
+        return $this->hasMany('App\Photo');
+    }
 }
