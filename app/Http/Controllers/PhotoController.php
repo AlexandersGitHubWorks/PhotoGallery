@@ -6,6 +6,7 @@ use App\Photo;
 use Illuminate\Http\Request;
 use App\Http\Requests\PhotoRequest;
 use Auth;
+use Gate;
 
 class PhotoController extends Controller
 {
@@ -55,6 +56,11 @@ class PhotoController extends Controller
      */
     public function edit($id)
     {
+        // Checking have user access to edit
+        if (Gate::denies('author-policy', Photo::find($id))) {
+            return redirect()->back()->with('message', 'You don\'t have access');
+        }
+
         $photo = Photo::find($id);
         return view('photo.edit', compact('photo'));
     }
@@ -64,6 +70,11 @@ class PhotoController extends Controller
      */
     public function update(PhotoRequest $request, $id)
     {
+        // Checking have user access to edit
+        if (Gate::denies('author-policy', Photo::find($id))) {
+            return redirect()->back()->with('message', 'You don\'t have access');
+        }
+
         $data = $request->validated();
         $user = Auth::user();
 
@@ -82,6 +93,11 @@ class PhotoController extends Controller
      */
     public function destroy($id)
     {
+        // Checking have user access to edit
+        if (Gate::denies('author-policy', Photo::find($id))) {
+            return redirect()->back()->with('message', 'You don\'t have access');
+        }
+
         $photo = Photo::find($id);
         $user = Auth::user();
 
