@@ -18,10 +18,12 @@
                 <form method="post" action="{{ route('photo.update', ['id' => $photo->id]) }}" enctype="multipart/form-data">
                     @csrf
                     <input name="_method" type="hidden" value="PATCH">
+
                     <div class="form-group">
                         <label for="img">Image:</label>
                         <br>
                         <input type="file" name="img" id="img" value="{{ asset('storage/logos/' . $photo->logo) }}">
+                        <div class="text-muted">jpeg, jpg</div>
                     </div>
                     <div class="form-group">
                         <label for="name">Name:</label>

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Photo;
 use Illuminate\Http\Request;
 use App\Http\Requests\PhotoRequest;
-use Auth;
-use Gate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PhotoController extends Controller
 {
@@ -34,9 +34,17 @@ class PhotoController extends Controller
     public function store(PhotoRequest $request)
     {
         $data = $request->validated();
+        $user = Auth::user();
+
+        // Save Photo to storage
+        if ($image = $request->file('img')) {
+            $image_name = time() . '-o-' . $image->getClientOriginalName();
+            $image->move(public_path('storage/photos/'), $image_name);
+            event('image-slicing', $image_name);
+        }
+        $data['img'] = $image_name;
 
         // Save photo with binding to current User
-        $user = Auth::user();
         $user->photos()->create($data);
 
         return redirect()->route('user', ['id' => $user->id])->with('status', 'Photo was uploaded');

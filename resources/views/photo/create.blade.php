@@ -17,10 +17,12 @@
             <div class="col-md-8">
                 <form method="post" action="{{ route('photo.store') }}" enctype="multipart/form-data">
                     @csrf
+
                     <div class="form-group">
                         <label for="img">Image:</label>
                         <br>
                         <input type="file" name="img" id="img">
+                        <div class="text-muted">jpeg, jpg</div>
                     </div>
                     <div class="form-group">
                         <label for="name">Name:</label>
