@@ -17,7 +17,7 @@
             <div class="col-md-8">
                 <form method="post" action="{{ route('photo.update', ['id' => $photo->id]) }}" enctype="multipart/form-data">
                     @csrf
-                    <input name="_method" type="hidden" value="PATCH">
+                    @method('PATCH')
 
                     <div class="form-group">
                         <label for="img">Image:</label>

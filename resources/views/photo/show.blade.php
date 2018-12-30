@@ -3,11 +3,10 @@
 @section('content')
     <div class="container">
         @if (isset($photo))
-            <div>{{ $photo->img }}</div>
+            <div>@getPhoto($photo->img, 'md')</div>
             <div>{{ $photo->name }}</div>
             <div>{{ $photo->description }}</div>
-{{--            <div><a href="{{ route('photo.show', ['id'=> $photo->id]) }}">View Original</a></div>--}}
-
+            <div><a href="{{ route('photo.show.original', ['id' => $photo->id]) }}">View Original</a></div>
             @can('author-policy', $photo)
                 <div><a class="btn btn-primary" href="{{ route('photo.edit', ['id'=> $photo->id]) }}">Update</a></div>
                 <div>

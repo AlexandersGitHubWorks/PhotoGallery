@@ -17,7 +17,7 @@ class PhotoController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'show']);
+        $this->middleware('auth', ['except' => ['show', 'showOriginal']]);
     }
 
     /**
@@ -38,11 +38,11 @@ class PhotoController extends Controller
 
         // Save Photo to storage
         if ($image = $request->file('img')) {
-            $image_name = time() . '-o-' . $image->getClientOriginalName();
+            $image_name = time() . '-' . $image->getClientOriginalName();
             $image->move(public_path('storage/photos/'), $image_name);
+            $data['img'] = $image_name;
             event('image-slicing', $image_name);
         }
-        $data['img'] = $image_name;
 
         // Save photo with binding to current User
         $user->photos()->create($data);
@@ -115,5 +115,14 @@ class PhotoController extends Controller
         }
 
         return redirect()->route('user', ['id' => $user->id])->with('status', 'Photo has not been deleted.');
+    }
+
+    /**
+     * Display the original size Photo.
+     */
+    public function showOriginal($id)
+    {
+        $photo = Photo::find($id);
+        return view('photo.show_original', compact('photo'));
     }
 }

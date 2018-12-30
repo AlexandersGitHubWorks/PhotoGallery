@@ -17,3 +17,4 @@ Route::get('/', 'UserController@index')->name('home');
 Route::get('/user/{id}', 'UserController@show')->name('user');
 
 Route::resource('/photo', 'PhotoController', ['except' => ['index']]);
+Route::get('/photo/{photo}/original', 'PhotoController@showOriginal')->name('photo.show.original');

@@ -17,11 +17,10 @@
                 </div>
             @else
                 @foreach($user->photos as $photo)
-                    <div><img src="{{ asset('storage/photos/' . $photo->img) }}"></div>
-                    <div>{{ $photo->img }}</div>
+                    <div>@getPhoto($photo->img, 'sm')</div>
                     <div>{{ $photo->name }}</div>
                     <div>{{ $photo->description }}</div>
-                    <div><a href="{{ route('photo.show', ['id'=> $photo->id]) }}">View Original</a></div>
+                    <div><a href="{{ route('photo.show', ['id'=> $photo->id]) }}">View</a></div>
                     @can('author-policy', $photo)
                         <div><a class="btn btn-primary" href="{{ route('photo.edit', ['id'=> $photo->id]) }}">Update</a>
                         </div>
