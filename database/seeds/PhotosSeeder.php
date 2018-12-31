@@ -14,7 +14,7 @@ class PhotosSeeder extends Seeder
     {
         for ($i = 1; $i <= 5; $i++) {
             Photo::create([
-                'img' => 'picture' . $i . '.jpg',
+                'img' => 'picture1.jpg',
                 'name' => 'picture' . $i,
                 'description' => 'Description ' . $i
             ]);

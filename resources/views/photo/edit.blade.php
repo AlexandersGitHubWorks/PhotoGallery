@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label for="img">Image:</label>
                         <br>
-                        <input type="file" name="img" id="img" value="{{ asset('storage/logos/' . $photo->logo) }}">
+                        <input type="file" name="img" id="img" value="{{ storage_path($photo->img) }}">
                         <div class="text-muted">jpeg, jpg</div>
                     </div>
                     <div class="form-group">

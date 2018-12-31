@@ -10,29 +10,23 @@
         @endif
 
         @if (isset($user))
-
             @if ($user->photos->isEmpty())
                 <div class="alert alert-info" role="alert">
                     No uploaded images.
                 </div>
             @else
+                <div id="flash-message"></div>
                 @foreach($user->photos as $photo)
-                    <div>@getPhoto($photo->img, 'sm')</div>
-                    <div>{{ $photo->name }}</div>
-                    <div>{{ $photo->description }}</div>
-                    <div><a href="{{ route('photo.show', ['id'=> $photo->id]) }}">View</a></div>
-                    @can('author-policy', $photo)
-                        <div><a class="btn btn-primary" href="{{ route('photo.edit', ['id'=> $photo->id]) }}">Update</a>
-                        </div>
-                        <div>
-                            <form action="{{ route('photo.destroy', ['id'=> $photo->id]) }}" method="post">
-                                @csrf
-                                <input name="_method" type="hidden" value="delete">
-                                <button class="btn btn-danger" type="submit">Delete</button>
-                            </form>
-                        </div>
-                    @endcan
-                    <br>
+                    <div class="photo-wrap">
+                        <div>@getPhoto($photo->img, 'sm')</div>
+                        <div>{{ $photo->name }}</div>
+                        <div>{{ $photo->description }}</div>
+                        <div><a href="{{ route('photo.show', ['id'=> $photo->id]) }}">View</a></div>
+                        @can('author-policy', $photo)
+                            <div><a class="btn btn-primary" href="{{ route('photo.edit', ['id'=> $photo->id]) }}">Update</a></div>
+                            <button class="btn btn-danger delete-photo" data-id="{{ $photo->id }}">Delete</button>
+                        @endcan
+                    </div>
                 @endforeach
             @endif
         @endif

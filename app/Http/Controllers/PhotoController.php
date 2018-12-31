@@ -107,14 +107,13 @@ class PhotoController extends Controller
         }
 
         $photo = Photo::find($id);
-        $user = Auth::user();
 
         if (isset($photo)) {
             $photo->delete();
-            return redirect()->route('user', ['id' => $user->id])->with('status', 'Photo was deleted');
+            return response()->json(['succeed' => 'true', 'message' => 'Photo was deleted']);
         }
 
-        return redirect()->route('user', ['id' => $user->id])->with('status', 'Photo has not been deleted.');
+        return response()->json(['succeed' => 'false', 'message' => 'Photo has not been deleted']);
     }
 
     /**
