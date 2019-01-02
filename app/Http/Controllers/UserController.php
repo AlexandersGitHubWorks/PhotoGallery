@@ -7,6 +7,16 @@ use App\User;
 
 class UserController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('user.has.table');
+    }
+
     public function index()
     {
         $users = User::all();
