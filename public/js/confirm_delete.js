@@ -14,14 +14,14 @@ $(document).on('click', '.delete-photo', function() {
                 if (response.succeed) {
                     wrap.remove();
 
-                    let flashMessage = '<div class="alert alert-success alert-block"><button type="button" class="close" data-dismiss="alert">×</button><strong>'
+                    let flashMessage = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button>'
                         + response.message +
-                        '</strong></div>';
+                        '</div>';
                     $('#flash-message').append(flashMessage);
                 } else {
-                    let flashMessage = '<div class="alert alert-error alert-block"><button type="button" class="close" data-dismiss="alert">×</button><strong>'
+                    let flashMessage = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button>'
                         + response.message +
-                        '</strong></div>';
+                        '</div>';
                     $('#flash-message').append(flashMessage);
                 }
             },

@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/ajax.js') }}" defer></script> <!-- Ajax for remove Photo -->
+    <script src="{{ asset('js/confirm_delete.js') }}" defer></script> <!-- Ajax for remove Photo -->
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -83,6 +83,7 @@
             @if (session('message'))
                 <div class="container">
                     <div class="alert alert-info" role="alert">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
                         {{ session('message') }}
                     </div>
                 </div>

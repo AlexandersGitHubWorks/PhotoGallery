@@ -33,6 +33,8 @@ class PhotoController extends Controller
      */
     public function store(PhotoRequest $request)
     {
+        $request->flash();
+
         $data = $request->validated();
         $user = Auth::user();
 
@@ -87,11 +89,20 @@ class PhotoController extends Controller
         $user = Auth::user();
 
         $photo = Photo::find($id);
-        $photo->img = $data['img'];
-        $photo->name = $data['name'];
-        if (isset($data['description']))
-            $photo->description = $data['description'];
-        $photo->save();
+
+        // Save Photo to storage
+        if ($image = $request->file('img')) {
+            $image_name = time() . '-' . $image->getClientOriginalName();
+            $image->move(public_path('storage/photos/'), $image_name);
+
+            $photo->img = $image_name;
+            $photo->name = $data['name'];
+            if (isset($data['description']))
+                $photo->description = $data['description'];
+            $photo->save();
+
+            event('image-slicing', $image_name);
+        }
 
         return redirect()->route('user', ['id' => $user->id])->with('status', 'Photo was updated');
     }

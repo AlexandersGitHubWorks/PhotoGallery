@@ -5,6 +5,7 @@
 
         @if (session('status'))
             <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert">×</button>
                 {{ session('status') }}
             </div>
         @endif
@@ -16,18 +17,23 @@
                 </div>
             @else
                 <div id="flash-message"></div>
-                @foreach($user->photos as $photo)
-                    <div class="photo-wrap">
-                        <div>@getPhoto($photo->img, 'sm')</div>
-                        <div>{{ $photo->name }}</div>
-                        <div>{{ $photo->description }}</div>
-                        <div><a href="{{ route('photo.show', ['id'=> $photo->id]) }}">View</a></div>
-                        @can('author-policy', $photo)
-                            <div><a class="btn btn-primary" href="{{ route('photo.edit', ['id'=> $photo->id]) }}">Update</a></div>
-                            <button class="btn btn-danger delete-photo" data-id="{{ $photo->id }}">Delete</button>
-                        @endcan
-                    </div>
-                @endforeach
+                <div class="row">
+                    @foreach($user->photos as $photo)
+                        <div class="photo-wrap col-4 mb-5">
+                            @getPhoto($photo->img, 'sm')
+                            <h3 class="my-3">{{ $photo->name }}</h3>
+                            <div class="mb-3">{{ $photo->description }}</div>
+                            <div class="buttons">
+                                <a href="{{ route('photo.show', ['id'=> $photo->id]) }}" class="btn btn-primary">View</a>
+                                @can('author-policy', $photo)
+                                    <span class="align-middle text-muted">|</span>
+                                    <a class="btn btn-danger" href="{{ route('photo.edit', ['id'=> $photo->id]) }}">Update</a>
+                                    <button class="btn btn-danger delete-photo" data-id="{{ $photo->id }}">Delete</button>
+                                @endcan
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             @endif
         @endif
     </div>

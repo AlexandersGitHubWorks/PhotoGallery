@@ -30,12 +30,12 @@ class AppServiceProvider extends ServiceProvider
                 $result = '<?php $pathinfo_name = pathinfo(' . $image . ', PATHINFO_FILENAME); ?>'
                         . '<?php $image_name = str_replace($pathinfo_name, $pathinfo_name . \'-\' . ' . $size . ', ' . $image . '); ?>'
                         . '<?php if (file_exists("' . ($path . '$image_name') . '")) { ?>'
-                            . '<img src="' . asset($path . '<?php echo $image_name ?>') . '">'
+                            . '<img src="' . asset($path . '<?php echo $image_name ?>') . '" class="img-thumbnail">'
                         . '<?php } else { ?>'
-                            . '<img src="' . asset($path . '<?php echo '. $image .' ?>') . '">'
+                            . '<img src="' . asset($path . '<?php echo '. $image .' ?>') . '" class="img-thumbnail">'
                         . '<?php } ?>';
             } else if (!is_null($image)) {
-                $result = '<img src="' . asset($path . '<?php echo '. $image .' ?>') . '">';
+                $result = '<img src="' . asset($path . '<?php echo '. $image .' ?>') . '" class="img-thumbnail">';
             } else {
                 $result = '<div>Image not found</div>';
             }
