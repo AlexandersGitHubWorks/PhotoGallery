@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PhotoRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use App\Helpers\Contracts\PhotoFileContract;
 
 class PhotoController extends Controller
 {
@@ -31,23 +32,21 @@ class PhotoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PhotoRequest $request)
+    public function store(PhotoRequest $request, PhotoFileContract $photo_file)
     {
         $request->flash();
 
-        $data = $request->validated();
         $user = Auth::user();
 
-        // Save Photo to storage
         if ($image = $request->file('img')) {
-            $image_name = time() . '-' . $image->getClientOriginalName();
-            $image->move(public_path('storage/photos/'), $image_name);
-            $data['img'] = $image_name;
-            event('image-slicing', $image_name);
-        }
+            // Saving photo files and its cutting
+            $photo_file->storePhoto($image);
 
-        // Save photo with binding to current User
-        $user->photos()->create($data);
+            // Save photo in db with binding to current User
+            $data = $request->validated();
+            $data['img'] = $photo_file->image_name;
+            $user->photos()->create($data);
+        }
 
         return redirect()->route('user', ['id' => $user->id])->with('status', 'Photo was uploaded');
     }
@@ -78,30 +77,27 @@ class PhotoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PhotoRequest $request, $id)
+    public function update(PhotoRequest $request, PhotoFileContract $photo_file, $id)
     {
         // Checking have user access to edit
         if (Gate::denies('author-policy', Photo::find($id))) {
             return redirect()->back()->with('message', 'You don\'t have access');
         }
 
-        $data = $request->validated();
         $user = Auth::user();
-
         $photo = Photo::find($id);
 
-        // Save Photo to storage
         if ($image = $request->file('img')) {
-            $image_name = time() . '-' . $image->getClientOriginalName();
-            $image->move(public_path('storage/photos/'), $image_name);
+            // Saving photo files and its cutting
+            $photo_file->storePhoto($image);
 
-            $photo->img = $image_name;
+            // Save photo in db
+            $data = $request->validated();
+            $photo->img = $photo_file->image_name;
             $photo->name = $data['name'];
             if (isset($data['description']))
                 $photo->description = $data['description'];
             $photo->save();
-
-            event('image-slicing', $image_name);
         }
 
         return redirect()->route('user', ['id' => $user->id])->with('status', 'Photo was updated');
